@@ -1,8 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\JobController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,13 +17,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/home', function() {
+Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::get('/guy/{id}', function($id) {
     return "Hello guy $id!";
@@ -45,8 +51,8 @@ Route::prefix('admin')->group(function() {
 
 Route::get('/users', [UserController::class, 'index']);
 
-Route::get('/blogs', [BlogController::class, 'index']);
+Route::get('/blogs', [BlogController::class, 'index'])->name('blogs');
 
-Route::get('/jobs', [JobController::class, 'index']);
+Route::get('/jobs', [JobController::class, 'index'])->name('jobs');
 
-Route::get('/products', [ProductController::class, 'index']);
+require __DIR__.'/auth.php';

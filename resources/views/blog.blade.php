@@ -7,7 +7,7 @@
 @section('content')
   <div class="container">
     <h1>Dobrodosli na blog</h1>
-    <div class="row">
+    <div class="row row-gap-3">
       @foreach ($blogs as $blog)
         <div class="col-md-4">
           <div class="card">
