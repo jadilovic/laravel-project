@@ -17,7 +17,16 @@
       </ul>
       <div class="d-flex">
         <!-- Authentication -->
-        @if (Auth::check())
+        <?php
+          function isLoggedIn() {
+            try {
+              return Auth::check();
+            } catch (\Throwable $th) {
+              return false;
+            }
+          }
+        ?>
+        @if (isLoggedIn())
             <form method="POST" action="{{ route('logout') }}">
               @csrf
               <a

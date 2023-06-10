@@ -45,25 +45,35 @@ class BlogController extends Controller
     }
 
     public function edit($id) {
-        $blog = Blog::findOrFail($id);
-        return view('dashboard.blogsEditForm', compact('blog'));
+        try {
+            $blog = Blog::findOrFail($id);
+            return view('dashboard.blogsEditForm', compact('blog'));
+        } catch (\Throwable $th) {
+            return redirect()->route('dashboard.blogs')->with('error', 'Blog nije uredjen!');
+        }
     }
 
     public function update(Request $request, $id) {
-        
-        $blog = Blog::findOrFail($id);
-        $blog->naziv = $request->naziv;
-        $blog->opis = $request->opis;
-        $blog->save();
+        try {
+            $blog = Blog::findOrFail($id);
+            $blog->naziv = $request->naziv;
+            $blog->opis = $request->opis;
+            $blog->save();
 
-        return redirect()->route('blogs.edit', $id)->with('success', 'Uspjesno ste uredili blog!');
-
+            return redirect()->route('blogs.edit', $id)->with('success', 'Uspjesno ste uredili blog!');
+        } catch (\Throwable $th) {
+            return redirect()->route('blogs.edit', $id)->with('error', 'Blog nije uredjen!');
+        }
     }
 
     public function destroy($id) {
-        $blog = Blog::findOrFail($id);
-        $blog->delete();
+        try {
+            $blog = Blog::findOrFail($id);
+            $blog->delete();
 
-        return redirect()->route('dashboard.blogs')->with('success', 'Uspjesno ste obrisali blog!');
+            return redirect()->route('dashboard.blogs')->with('success', 'Uspjesno ste obrisali blog!');
+        } catch (\Throwable $th) {
+            return redirect()->route('dashboard.blogs')->with('error', 'Blog nije obrisan!');
+        }
     }
 }
