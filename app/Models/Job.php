@@ -11,6 +11,7 @@ class Job extends Model
      protected $fillable = [
         'naziv',
         'opis',
+        'slika'
         // Add more fields as needed
     ];
 }

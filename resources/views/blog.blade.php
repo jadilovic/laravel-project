@@ -11,6 +11,9 @@
       @foreach ($blogs as $blog)
         <div class="col-md-4">
           <div class="card">
+            @if ($blog->slika)
+                <img src="{{asset('storage/slike/' . $blog->slika)}}" class="card-img-top" alt="{{$blog->naziv}}" >
+            @endif
             <div class="card-body">
               <h5 class="card-title">{{$blog->naziv}}</h5>
               <p class="card-text">{{$blog->opis}}</p>

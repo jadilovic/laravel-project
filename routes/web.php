@@ -17,33 +17,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/dashboard', function () {
-    return view('dashboard.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// BLOGS -------- BLOGS ///
-Route::get('/dashboard/blogs', [BlogController::class, 'dashboardIndex'])->name('dashboard.blogs');
-Route::get('/dashboard/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
-Route::post('/dashboard/blogs', [BlogController::class, 'store'])->name('blogs.store');
-
-Route::get('/dashboard/blogs/{id}/edit', [BlogController::class, 'edit'])->name('blogs.edit');
-Route::put('/dashboard/blogs/{id}', [BlogController::class, 'update'])->name('blogs.update');
-Route::delete('/dashboard/blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.delete');
-
-// JOBS --------- JOBS ///
-Route::get('/dashboard/jobs', [JobController::class, 'dashboardIndex'])->name('dashboard.jobs');
-Route::get('/dashboard/jobs/create', [JobController::class, 'create'])->name('jobs.create');
-Route::post('/dashboard/jobs', [JobController::class, 'store'])->name('jobs.store');
-
-Route::get('/dashboard/jobs/{id}/edit', [JobController::class, 'edit'])->name('jobs.edit');
-Route::put('/dashboard/jobs/{id}', [JobController::class, 'update'])->name('jobs.update');
-Route::delete('/dashboard/jobs/{id}', [JobController::class, 'destroy'])->name('jobs.delete');
-
 // PROFILE - AUTH ---------- PROFILE - AUTH //
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/dashboard', function () {
+        return view('dashboard.dashboard');
+    })->middleware(['auth', 'verified'])->name('dashboard');
+
+    // BLOGS -------- BLOGS ///
+    Route::get('/dashboard/blogs', [BlogController::class, 'dashboardIndex'])->name('dashboard.blogs');
+    Route::get('/dashboard/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
+    Route::post('/dashboard/blogs', [BlogController::class, 'store'])->name('blogs.store');
+
+    Route::get('/dashboard/blogs/{id}/edit', [BlogController::class, 'edit'])->name('blogs.edit');
+    Route::put('/dashboard/blogs/{id}', [BlogController::class, 'update'])->name('blogs.update');
+    Route::delete('/dashboard/blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.delete');
+
+    // JOBS --------- JOBS ///
+    Route::get('/dashboard/jobs', [JobController::class, 'dashboardIndex'])->name('dashboard.jobs');
+    Route::get('/dashboard/jobs/create', [JobController::class, 'create'])->name('jobs.create');
+    Route::post('/dashboard/jobs', [JobController::class, 'store'])->name('jobs.store');
+
+    Route::get('/dashboard/jobs/{id}/edit', [JobController::class, 'edit'])->name('jobs.edit');
+    Route::put('/dashboard/jobs/{id}', [JobController::class, 'update'])->name('jobs.update');
+    Route::delete('/dashboard/jobs/{id}', [JobController::class, 'destroy'])->name('jobs.delete');
 });
 
 Route::get('/', function () {

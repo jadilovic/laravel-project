@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Blog;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
 {
@@ -30,13 +31,26 @@ class BlogController extends Controller
         try {
             $request->validate([
                 'naziv' => 'required',
-                'opis' => 'required'
+                'opis' => 'required',
+                'slika' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
-            Blog::create([
-                'naziv' => $request->naziv,
-                'opis' => $request->opis
-            ]);
+            if ($request->hasFile('slika')) {
+                $slika = $request->file('slika');
+                $imeSlike = time() . '_' . $slika->getClientOriginalName();
+                $slika->storeAs('public/slike', $imeSlike);
+
+                Blog::create([
+                    'naziv' => $request->naziv,
+                    'opis' => $request->opis,
+                    'slika' => $imeSlike
+                ]);
+            } else {
+                Blog::create([
+                    'naziv' => $request->naziv,
+                    'opis' => $request->opis
+                ]);
+            }
 
             return redirect()->route('dashboard.blogs')->with('success', 'Blog je uspjesno kreiran');
         } catch (\Throwable $th) {
@@ -58,6 +72,12 @@ class BlogController extends Controller
             $blog = Blog::findOrFail($id);
             $blog->naziv = $request->naziv;
             $blog->opis = $request->opis;
+            if ($request->hasFile('slika')) {
+                $slika = $request->file('slika');
+                $imeSlike = time() . '_' . $slika->getClientOriginalName();
+                $slika->storeAs('public/slike', $imeSlike);
+                $blog->slika = $imeSlike;
+            }
             $blog->save();
 
             return redirect()->route('blogs.edit', $id)->with('success', 'Uspjesno ste uredili blog!');

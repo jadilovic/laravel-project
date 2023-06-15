@@ -31,13 +31,26 @@ class JobController extends Controller
         try {
             $request->validate([
                 'naziv' => 'required',
-                'opis' => 'required'
+                'opis' => 'required',
+                'slika' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
-            Job::create([
-                'naziv' => $request->naziv,
-                'opis' => $request->opis
-            ]);
+            if ($request->hasFile('slika')) {
+                $slika = $request->file('slika');
+                $imeSlike = time() . '_' . $slika->getClientOriginalName();
+                $slika->storeAs('public/slike', $imeSlike);
+
+                Job::create([
+                    'naziv' => $request->naziv,
+                    'opis' => $request->opis,
+                    'slika' => $imeSlike
+                ]);
+            } else {
+                Job::create([
+                    'naziv' => $request->naziv,
+                    'opis' => $request->opis
+                ]);
+            }
 
             return redirect()->route('dashboard.jobs')->with('success', 'Job je uspjesno kreiran');
         } catch (\Throwable $th) {
@@ -55,6 +68,12 @@ class JobController extends Controller
         $job = Job::findOrFail($id);
         $job->naziv = $request->naziv;
         $job->opis = $request->opis;
+        if ($request->hasFile('slika')) {
+            $slika = $request->file('slika');
+            $imeSlike = time() . '_' . $slika->getClientOriginalName();
+            $slika->storeAs('public/slike', $imeSlike);
+            $job->slika = $imeSlike;
+        }
         $job->save();
 
         return redirect()->route('jobs.edit', $id)->with('success', 'Uspjesno ste uredili job!');

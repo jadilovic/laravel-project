@@ -11,6 +11,9 @@
       @foreach ($jobs as $job)
         <div class="col-md-4">
           <div class="card">
+            @if ($job->slika)
+                <img src="{{asset('storage/slike/' . $job->slika)}}" class="card-img-top" alt="{{$job->naziv}}" >
+            @endif
             <div class="card-body">
               <h5 class="card-title">{{$job->naziv}}</h5>
               <p class="card-text">{{$job->opis}}</p>

@@ -20,7 +20,7 @@
         </div>
     @endif
 
-    <form action="{{ route('jobs.update', $job->id) }}" method="post">
+    <form action="{{ route('jobs.update', $job->id) }}" method="post" enctype="multipart/form-data" >
       @csrf
       @method('PUT')
       <div class="mb-3">
@@ -30,6 +30,20 @@
       <div class="mb-3">
         <label for="opis" class="form-label">Opis</label>
         <textarea class="form-control" name="opis" id="opis" cols="30" rows="10" required>{{ $job->opis }}</textarea>
+      </div>
+       @if ($job->slika)
+          <div class="mb-3">
+            <label for="slika">Trenutn slika:</label>
+            <img src="{{asset('storage/slike/' . $job->slika)}}" alt="job photo" style="max-width: 300px;" >
+          </div>
+      @else
+          <div class="mb-3">
+            <p>Trenutno nema slike.</p>
+          </div>
+      @endif
+      <div class="mb-3">
+        <label for="file" class="form-label">Nova slika:</label>
+        <input type="file" name="slika" id="slika" class="form-control" >
       </div>
       <button type="submit" class="btn btn-primary">Spremi</button>
     </form>
