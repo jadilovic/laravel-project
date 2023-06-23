@@ -11,7 +11,11 @@ class Blog extends Model
     protected $fillable = [
         'naziv',
         'opis',
-        'slika'
-        // Add more fields as needed
+        'slika',
+        'category_id'
     ];
+
+    public function category() {
+        return $this->hasOne(BlogCategory::class, 'id', 'category_id');
+    }
 }

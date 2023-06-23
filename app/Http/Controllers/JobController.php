@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Job;
-
+use App\Models\JobCategory;
 use Illuminate\Http\Request;
 
 class JobController extends Controller
@@ -24,7 +24,8 @@ class JobController extends Controller
     }
 
     public function create() {
-        return view('dashboard.jobsAddForm');
+        $kategorije = JobCategory::all();
+        return view('dashboard.jobsAddForm', compact('kategorije'));
     }
 
     public function store(Request $request) {
@@ -35,6 +36,11 @@ class JobController extends Controller
                 'slika' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
+            $category_id = null;
+            if ($request->kategorija != '') {
+                $category_id = $request->kategorija;
+            }
+
             if ($request->hasFile('slika')) {
                 $slika = $request->file('slika');
                 $imeSlike = time() . '_' . $slika->getClientOriginalName();
@@ -43,12 +49,14 @@ class JobController extends Controller
                 Job::create([
                     'naziv' => $request->naziv,
                     'opis' => $request->opis,
-                    'slika' => $imeSlike
+                    'slika' => $imeSlike,
+                    'category_id' => $category_id
                 ]);
             } else {
                 Job::create([
                     'naziv' => $request->naziv,
-                    'opis' => $request->opis
+                    'opis' => $request->opis,
+                    'category_id' => $category_id
                 ]);
             }
 
@@ -60,7 +68,8 @@ class JobController extends Controller
 
     public function edit($id) {
         $job = Job::findOrFail($id);
-        return view('dashboard.jobsEditForm', compact('job'));
+        $kategorije = JobCategory::all();
+        return view('dashboard.jobsEditForm', compact('job', 'kategorije'));
     }
 
     public function update(Request $request, $id) {
@@ -68,6 +77,13 @@ class JobController extends Controller
         $job = Job::findOrFail($id);
         $job->naziv = $request->naziv;
         $job->opis = $request->opis;
+
+        $category_id = null;
+        if ($request->kategorija != '') {
+            $category_id = $request->kategorija;
+        }
+        $job->category_id = $category_id;
+
         if ($request->hasFile('slika')) {
             $slika = $request->file('slika');
             $imeSlike = time() . '_' . $slika->getClientOriginalName();

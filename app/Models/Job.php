@@ -11,7 +11,12 @@ class Job extends Model
      protected $fillable = [
         'naziv',
         'opis',
-        'slika'
+        'slika',
+        'category_id'
         // Add more fields as needed
     ];
+
+    public function category() {
+        return $this->hasOne(JobCategory::class, 'id', 'category_id');
+    }
 }

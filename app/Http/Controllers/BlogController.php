@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Blog;
-
+use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,7 +24,8 @@ class BlogController extends Controller
     }
 
     public function create() {
-        return view('dashboard.blogsAddForm');
+        $kategorije = BlogCategory::all();
+        return view('dashboard.blogsAddForm', compact('kategorije'));
     }
 
     public function store(Request $request) {
@@ -35,6 +36,11 @@ class BlogController extends Controller
                 'slika' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
             ]);
 
+            $category_id = null;
+            if($request->kategorija != '') {
+                $category_id = $request->kategorija;
+            }
+
             if ($request->hasFile('slika')) {
                 $slika = $request->file('slika');
                 $imeSlike = time() . '_' . $slika->getClientOriginalName();
@@ -43,12 +49,14 @@ class BlogController extends Controller
                 Blog::create([
                     'naziv' => $request->naziv,
                     'opis' => $request->opis,
-                    'slika' => $imeSlike
+                    'slika' => $imeSlike,
+                    'category_id' => $category_id
                 ]);
             } else {
                 Blog::create([
                     'naziv' => $request->naziv,
-                    'opis' => $request->opis
+                    'opis' => $request->opis,
+                    'category_id' => $category_id
                 ]);
             }
 
@@ -61,7 +69,8 @@ class BlogController extends Controller
     public function edit($id) {
         try {
             $blog = Blog::findOrFail($id);
-            return view('dashboard.blogsEditForm', compact('blog'));
+            $kategorije = BlogCategory::all();
+            return view('dashboard.blogsEditForm', compact('blog', 'kategorije'));
         } catch (\Throwable $th) {
             return redirect()->route('dashboard.blogs')->with('error', 'Blog nije uredjen!');
         }
@@ -72,6 +81,13 @@ class BlogController extends Controller
             $blog = Blog::findOrFail($id);
             $blog->naziv = $request->naziv;
             $blog->opis = $request->opis;
+           
+            $category_id = null;
+            if($request->kategorija != '') {
+                $category_id = $request->kategorija;
+            }
+            $blog->category_id = $category_id;
+            
             if ($request->hasFile('slika')) {
                 $slika = $request->file('slika');
                 $imeSlike = time() . '_' . $slika->getClientOriginalName();

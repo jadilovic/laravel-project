@@ -18,6 +18,15 @@
         <textarea class="form-control" name="opis" id="opis" cols="30" rows="10" required></textarea>
       </div>
       <div class="mb-3">
+        <label for="kategorija" class="form-label">Kategorija</label>
+        <select name="kategorija" id="kategorija" class="form-control" >
+          <option value="">Odaberi kategoriju</option>
+          @foreach ($kategorije as $kategorija)
+              <option value="{{$kategorija->id}}">{{$kategorija->naziv}}</option>
+          @endforeach
+        </select>
+      </div>
+      <div class="mb-3">
         <label for="slika" class="form-label">Slika</label>
         <input type="file" name="slika" id="slika" class="form-control" >
       </div>

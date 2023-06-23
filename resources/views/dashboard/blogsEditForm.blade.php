@@ -31,10 +31,30 @@
         <label for="opis" class="form-label">Opis</label>
         <textarea class="form-control" name="opis" id="opis" cols="30" rows="10" required>{{ $blog->opis }}</textarea>
       </div>
+      <div class="mb-3">
+        <label for="kategorija" class="form-label">Kategorija</label>
+        <select name="kategorija" id="kategorija" class="form-control">
+          @if ($blog->category_id)
+              <option value="{{$blog->category->id}}">{{$blog->category->naziv}}</option>    
+          @else
+              <option value="">Odaberite kategoriju</option>
+          @endif
+          @foreach ($kategorije as $kategorija)
+              {{-- @if ($blog->category_id && $kategorija->id !== $blog->category->id)
+                  <option value="{{$kategorija->id}}">{{$kategorija->naziv}}</option>
+              @else
+                  <option value="{{$kategorija->id}}">{{$kategorija->naziv}}</option>
+              @endif --}}
+              @if ($blog->category_id != $kategorija->id)
+                  <option value="{{$kategorija->id}}">{{$kategorija->naziv}}</option>
+              @endif
+          @endforeach
+        </select>
+      </div>
       @if ($blog->slika)
           <div class="mb-3">
-            <label for="slika">Trenutn slika:</label>
-            <img src="{{asset('storage/slike/' . $blog->slika)}}" alt="profile photo" style="max-width: 300px;" >
+            <label for="slika">Trenutna slika:</label>
+            <img id="slika" src="{{asset('storage/slike/' . $blog->slika)}}" alt="profile photo" style="max-width: 300px;" >
           </div>
       @else
           <div class="mb-3">
@@ -43,7 +63,7 @@
       @endif
       <div class="mb-3">
         <label for="file" class="form-label">Nova slika:</label>
-        <input type="file" name="slika" id="slika" class="form-control" >
+        <input type="file" name="file" id="file" class="form-control" >
       </div>
       <button type="submit" class="btn btn-primary">Spremi</button>
     </form>
