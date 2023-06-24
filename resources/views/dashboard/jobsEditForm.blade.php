@@ -34,11 +34,7 @@
             <div class="mb-3">
         <label for="kategorija" class="form-label">Kategorija</label>
         <select name="kategorija" id="kategorija" class="form-control">
-          @if ($job->category_id)
-              <option value="{{$job->category->id}}">{{$job->category->naziv}}</option>    
-          @else
-              <option value="">Odaberite Job kategoriju</option>
-          @endif
+          <option value="{{$job->category->id}}">{{$job->category->naziv}}</option>    
           @foreach ($kategorije as $kategorija)
               @if ($job->category_id != $kategorija->id)
                   <option value="{{$kategorija->id}}">{{$kategorija->naziv}}</option>
@@ -48,8 +44,8 @@
       </div>
        @if ($job->slika)
           <div class="mb-3">
-            <label for="slika">Trenutn slika:</label>
-            <img id="slika" src="{{asset('storage/slike/' . $job->slika)}}" alt="job photo" style="max-width: 300px;" >
+            <label for="trenutna-slika">Trenutn slika:</label>
+            <img id="trenutna-slika" src="{{asset('storage/slike/' . $job->slika)}}" alt="job photo" style="max-width: 300px;" >
           </div>
       @else
           <div class="mb-3">
@@ -57,8 +53,8 @@
           </div>
       @endif
       <div class="mb-3">
-        <label for="file" class="form-label">Nova slika:</label>
-        <input type="file" name="file" id="file" class="form-control" >
+        <label for="slika" class="form-label">Nova slika:</label>
+        <input type="file" name="slika" id="slika" class="form-control" >
       </div>
       <button type="submit" class="btn btn-primary">Spremi</button>
     </form>

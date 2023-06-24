@@ -35,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/dashboard/blogs/{id}', [BlogController::class, 'update'])->name('blogs.update');
     Route::delete('/dashboard/blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.delete');
 
+    Route::get('/blogs/filter/{category}', [BlogController::class, 'filter'])->name('blogs.filter');
+
     // JOBS --------- JOBS ///
     Route::get('/dashboard/jobs', [JobController::class, 'dashboardIndex'])->name('dashboard.jobs');
     Route::get('/dashboard/jobs/create', [JobController::class, 'create'])->name('jobs.create');
@@ -43,6 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard/jobs/{id}/edit', [JobController::class, 'edit'])->name('jobs.edit');
     Route::put('/dashboard/jobs/{id}', [JobController::class, 'update'])->name('jobs.update');
     Route::delete('/dashboard/jobs/{id}', [JobController::class, 'destroy'])->name('jobs.delete');
+
+    Route::get('/jobs/filter/{category}', [JobController::class, 'filter'])->name('jobs.filter');
 });
 
 Route::get('/', function () {

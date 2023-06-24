@@ -19,7 +19,7 @@
       </div>
       <div class="mb-3">
         <label for="kategorija" class="form-label">Kategorija</label>
-        <select name="kategorija" id="kategorija" class="form-control" >
+        <select name="kategorija" id="kategorija" class="form-control" required>
           <option value="">Odaberi kategoriju</option>
           @foreach ($kategorije as $kategorija)
               <option value="{{$kategorija->id}}">{{$kategorija->naziv}}</option>

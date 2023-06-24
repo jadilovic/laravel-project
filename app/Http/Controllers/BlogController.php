@@ -33,7 +33,8 @@ class BlogController extends Controller
             $request->validate([
                 'naziv' => 'required',
                 'opis' => 'required',
-                'slika' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+                'slika' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'kategorija' => 'required|exists:blog_categories,id'
             ]);
 
             $category_id = null;
@@ -81,13 +82,8 @@ class BlogController extends Controller
             $blog = Blog::findOrFail($id);
             $blog->naziv = $request->naziv;
             $blog->opis = $request->opis;
+            $blog->category_id = $request->kategorija;
            
-            $category_id = null;
-            if($request->kategorija != '') {
-                $category_id = $request->kategorija;
-            }
-            $blog->category_id = $category_id;
-            
             if ($request->hasFile('slika')) {
                 $slika = $request->file('slika');
                 $imeSlike = time() . '_' . $slika->getClientOriginalName();
@@ -100,6 +96,12 @@ class BlogController extends Controller
         } catch (\Throwable $th) {
             return redirect()->route('blogs.edit', $id)->with('error', 'Blog nije uredjen!');
         }
+    }
+
+    public function filter($categoryId) {
+        $blogs = Blog::where('category_id', $categoryId)->get();
+        $categories = BlogCategory::all();
+        return view('blogFilter', compact('blogs', 'categories'));
     }
 
     public function destroy($id) {

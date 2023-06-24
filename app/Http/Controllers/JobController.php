@@ -33,7 +33,8 @@ class JobController extends Controller
             $request->validate([
                 'naziv' => 'required',
                 'opis' => 'required',
-                'slika' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+                'slika' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+                'kategorija' => 'required|exists:job_categories,id'
             ]);
 
             $category_id = null;
@@ -94,6 +95,12 @@ class JobController extends Controller
 
         return redirect()->route('jobs.edit', $id)->with('success', 'Uspjesno ste uredili job!');
 
+    }
+
+    public function filter($categoryId) {
+        $jobs = Job::where('category_id', $categoryId)->get();
+        $categories = JobCategory::all();
+        return view('jobsFilter', compact('jobs', 'categories'));
     }
 
     public function destroy($id) {
