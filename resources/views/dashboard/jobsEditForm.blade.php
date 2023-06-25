@@ -31,7 +31,10 @@
         <label for="opis" class="form-label">Opis</label>
         <textarea class="form-control" name="opis" id="opis" cols="30" rows="10" required>{{ $job->opis }}</textarea>
       </div>
-            <div class="mb-3">
+      <div class="mb-3 form-check">
+        <input type="checkbox" name="status" id="status" class="form-check-input" {{$job->status ? 'checked' : ''}}>
+      </div>
+      <div class="mb-3">
         <label for="kategorija" class="form-label">Kategorija</label>
         <select name="kategorija" id="kategorija" class="form-control">
           <option value="{{$job->category->id}}">{{$job->category->naziv}}</option>    

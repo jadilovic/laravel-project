@@ -18,6 +18,7 @@
               <h5 class="card-title">{{$blog->naziv}}</h5>
               <p class="card-text">{{$blog->opis}}</p>
               <span>Kategorija: {{$blog->category->naziv}}</span>
+              <a href="{{route('blogs.show', ['blog' => $blog->id])}}" class="btn btn-primary">Detalji</a>
             </div>
           </div>
         </div>

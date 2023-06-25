@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogCommentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\JobController;
@@ -36,6 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/dashboard/blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.delete');
 
     Route::get('/blogs/filter/{category}', [BlogController::class, 'filter'])->name('blogs.filter');
+    
+    Route::get('/blogs/{blog}', [BlogController::class, 'show'])->name('blogs.show');
+    Route::post('/comments', [BlogCommentController::class, 'store'])->name('comments.store');
 
     // JOBS --------- JOBS ///
     Route::get('/dashboard/jobs', [JobController::class, 'dashboardIndex'])->name('dashboard.jobs');

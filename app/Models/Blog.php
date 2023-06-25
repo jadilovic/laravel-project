@@ -18,4 +18,12 @@ class Blog extends Model
     public function category() {
         return $this->hasOne(BlogCategory::class, 'id', 'category_id');
     }
+
+    public function comments() {
+        return $this->hasMany(BlogComment::class);
+    }
+
+    public function blog() {
+        return $this->belongsTo(Blog::class);
+    }
 }

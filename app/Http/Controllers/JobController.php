@@ -78,6 +78,7 @@ class JobController extends Controller
         $job = Job::findOrFail($id);
         $job->naziv = $request->naziv;
         $job->opis = $request->opis;
+        $job->status = $request->has('status') ? 1 : 0;
 
         $category_id = null;
         if ($request->kategorija != '') {

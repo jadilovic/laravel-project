@@ -104,6 +104,10 @@ class BlogController extends Controller
         return view('blogFilter', compact('blogs', 'categories'));
     }
 
+    public function show(Blog $blog) {
+        return view('blogDetails', compact('blog'));
+    }
+
     public function destroy($id) {
         try {
             $blog = Blog::findOrFail($id);
