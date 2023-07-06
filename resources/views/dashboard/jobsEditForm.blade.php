@@ -33,6 +33,7 @@
       </div>
       <div class="mb-3 form-check">
         <input type="checkbox" name="status" id="status" class="form-check-input" {{$job->status ? 'checked' : ''}}>
+        <label for="status" class="form-check-label">Aktivan</label>
       </div>
       <div class="mb-3">
         <label for="kategorija" class="form-label">Kategorija</label>
