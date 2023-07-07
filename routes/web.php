@@ -82,3 +82,4 @@ Route::get('/blogs', [BlogController::class, 'index'])->name('blogs');
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs');
 
 require __DIR__.'/auth.php';
+require __DIR__.'/api.php';
